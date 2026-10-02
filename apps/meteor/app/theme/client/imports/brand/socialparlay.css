@@ -87,3 +87,12 @@ h3.rcx-box,
 h4.rcx-box {
 	font-family: var(--sp-font-family-heading);
 }
+
+/* Chat messages read at the p1 scale instead of Fuselage's p2. */
+/* stylelint-disable selector-class-pattern */
+.rcx-message-body,
+.rcx-message-header__name {
+	font-size: 1rem;
+	line-height: 1.5rem;
+}
+/* stylelint-enable selector-class-pattern */
