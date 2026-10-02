@@ -1,0 +1,96 @@
+/*
+ * Social Parlay brand: typography and the colors that must exist before React
+ * hydrates. The color palette itself lives in client/lib/brand/socialParlayPalette.ts.
+ */
+
+@font-face {
+	font-family: 'Source Sans 3';
+	font-style: normal;
+	font-weight: 400 700;
+	font-display: swap;
+	src: url('/fonts/SourceSans3-normal-latin.woff2') format('woff2');
+	unicode-range:
+		U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191,
+		U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+	font-family: 'Source Sans 3';
+	font-style: normal;
+	font-weight: 400 700;
+	font-display: swap;
+	src: url('/fonts/SourceSans3-normal-latin-ext.woff2') format('woff2');
+	unicode-range:
+		U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020,
+		U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+
+@font-face {
+	font-family: 'Source Sans 3';
+	font-style: italic;
+	font-weight: 400 700;
+	font-display: swap;
+	src: url('/fonts/SourceSans3-italic-latin.woff2') format('woff2');
+	unicode-range:
+		U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191,
+		U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+	font-family: 'Source Sans 3';
+	font-style: italic;
+	font-weight: 400 700;
+	font-display: swap;
+	src: url('/fonts/SourceSans3-italic-latin-ext.woff2') format('woff2');
+	unicode-range:
+		U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020,
+		U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+
+@font-face {
+	font-family: montserrat;
+	font-style: normal;
+	font-weight: 600 800;
+	font-display: swap;
+	src: url('/fonts/Montserrat-normal-latin.woff2') format('woff2');
+	unicode-range:
+		U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191,
+		U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+	font-family: montserrat;
+	font-style: normal;
+	font-weight: 600 800;
+	font-display: swap;
+	src: url('/fonts/Montserrat-normal-latin-ext.woff2') format('woff2');
+	unicode-range:
+		U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020,
+		U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+
+:root {
+	--rcx-font-family-sans:
+		'Source Sans 3', -apple-system, blinkmacsystemfont, 'Segoe UI', roboto, 'Helvetica Neue', 'Apple Color Emoji', 'Segoe UI Emoji',
+		'Segoe UI Symbol', arial, sans-serif;
+	--sp-font-family-heading: montserrat, var(--rcx-font-family-sans);
+	--layout-font-family-title: var(--sp-font-family-heading);
+	--body-font-family: var(--rcx-font-family-sans);
+	--primary-action-color: #1f5d7a;
+	--page-loading-background-light: var(--rcx-color-surface-tint, #f8fafc);
+	--page-loading-background-dark: var(--rcx-color-surface-tint, #0a0f1e);
+	--loading-bounce-color-light: var(--rcx-color-font-default, #1b536c);
+	--loading-bounce-color-dark: var(--rcx-color-font-default, #d7b95c);
+	--custom-scrollbar-color: var(--rcx-color-stroke-dark, #64748b);
+}
+
+h1,
+h2,
+h3,
+h4,
+h1.rcx-box,
+h2.rcx-box,
+h3.rcx-box,
+h4.rcx-box {
+	font-family: var(--sp-font-family-heading);
+}

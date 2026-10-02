@@ -1,7 +1,8 @@
 {
-	"name": "Rocket.Chat",
-	"short_name": "Rocket.Chat",
-	"background_color": "#fff",
+	"name": "Social Parlay",
+	"short_name": "Social Parlay",
+	"background_color": "#0a0f1e",
+	"theme_color": "#0a0f1e",
 	"icons": [
 		{
 			"src": "/assets/favicon_192.png",
