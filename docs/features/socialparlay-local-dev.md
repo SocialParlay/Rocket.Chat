@@ -14,14 +14,16 @@ replica set and seeds one admin account on first start.
 
 ## One-time setup (macOS, Apple Silicon)
 
-The repo pins Node 22 or 24 and Yarn 4.18 (`engines` in `package.json`) and Meteor 3.5.2
-(`apps/meteor/.meteor/release`). Rocket.Chat exits at startup on MongoDB older than 7 and warns below 8.
+Each upstream release pins a Node (`volta.node` in `package.json`), sometimes a Deno (`.tool-versions`, absent from 8.9.0 on), Yarn
+(`packageManager`) and Meteor (`apps/meteor/.meteor/release`) version; the dev script reads the Node and Deno pins
+itself, so the versions below are only for the one-time global installs. Rocket.Chat exits at startup on MongoDB older than 7 and warns below 8.
 
 ```sh
-mise install node@22                      # the repo rejects Node 26
-eval "$(mise env -s zsh node@22)"
+mise install node@22.22.3                 # the exact version in package.json volta.node; yarn rejects any other
+mise install deno@2.3.1                   # the version in .tool-versions; the Apps-Engine build needs it
+eval "$(mise env -s zsh node@22.22.3 deno@2.3.1)"
 corepack enable                           # yarn 4.18 is picked up from packageManager
-npm install -g meteor@3.5.2               # installs the tool into ~/.meteor; the script adds it to PATH
+npm install -g meteor                     # the tool fetches the release the repo pins; installs into ~/.meteor
 brew trust --formula mongodb/brew/mongodb-community@8.0 && brew install mongodb-community@8.0
 yarn install                              # several minutes; needs ~10 GB free
 ```

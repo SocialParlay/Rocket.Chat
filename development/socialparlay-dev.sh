@@ -18,7 +18,16 @@
 set -euo pipefail
 cd "$(dirname "$0")/.."
 
-eval "$(mise env -s bash node@22)"
+# The repo pins a Node version (package.json volta.node) and, on releases whose
+# Apps-Engine build needs it, a Deno version (.tool-versions).
+NODE_VERSION=$(sed -nE '/"volta"/,/}/ s/.*"node": *"([^"]+)".*/\1/p' package.json)
+TOOLS=("node@${NODE_VERSION}")
+if [ -f .tool-versions ]; then
+	DENO_VERSION=$(awk '/^deno /{print $2}' .tool-versions)
+	[ -n "${DENO_VERSION}" ] && TOOLS+=("deno@${DENO_VERSION}")
+fi
+mise install -q "${TOOLS[@]}"
+eval "$(mise env -s bash "${TOOLS[@]}")"
 export COREPACK_ENABLE_DOWNLOAD_PROMPT=0
 export PATH="$HOME/.meteor:$PATH"
 
@@ -58,11 +67,13 @@ export OVERWRITE_SETTING_Register_Server=false
 # The `dev` tasks of the workspace packages run in parallel, and a few of them
 # (livechat, for one) are one-shot builds that need their siblings' dist first.
 # A fresh checkout therefore gets a full dependency build before watch mode.
-if [ ! -d packages/ui-contexts/dist ]; then
+if [ ! -d packages/ui-contexts/dist ] || [ ! -d packages/livechat/dist ]; then
 	yarn turbo run build --filter='@rocket.chat/meteor^...'
 fi
 
 # Same as `yarn dev`, but with room for every package watcher plus Meteor: turbo
 # caps concurrency at 10 by default and the watchers never exit, so Meteor would
 # otherwise wait forever for a slot.
-exec yarn turbo run dev --env-mode=loose --parallel --concurrency=100 --filter='@rocket.chat/meteor...'
+# The livechat package's dev task is a clean-and-rebuild that races Meteor's copy
+# of its dist, so it stays out of watch mode and keeps the one-time build above.
+exec yarn turbo run dev --env-mode=loose --parallel --concurrency=100 --filter='@rocket.chat/meteor...' --filter='!@rocket.chat/livechat'
