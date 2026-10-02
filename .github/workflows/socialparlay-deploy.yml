@@ -1,0 +1,89 @@
+name: Social Parlay deploy
+
+# Switches the droplet's compose stack to a previously built image tag. Manual
+# only, and gated by the `production` environment so a reviewer can approve.
+# Rolling back is the same workflow with the previous tag, or with
+# `registry.rocket.chat/rocketchat/rocket.chat` and an upstream release number.
+#
+# Secrets: DROPLET_HOST, DROPLET_SSH_KEY (private key whose public half is in
+# root's authorized_keys on the droplet), DIGITALOCEAN_ACCESS_TOKEN (registry
+# read scope, used by the droplet to pull).
+
+on:
+  workflow_dispatch:
+    inputs:
+      image-tag:
+        description: 'Image tag to deploy, e.g. sp-8.8.1-1'
+        required: true
+        type: string
+      image:
+        description: 'Image repository'
+        required: false
+        default: registry.digitalocean.com/socialparlay/rocket.chat
+        type: string
+
+concurrency:
+  group: socialparlay-deploy
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    name: Deploy ${{ inputs.image-tag }}
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    environment: production
+
+    steps:
+      - name: Prepare SSH
+        env:
+          DROPLET_HOST: ${{ secrets.DROPLET_HOST }}
+          DROPLET_SSH_KEY: ${{ secrets.DROPLET_SSH_KEY }}
+        run: |
+          mkdir -p ~/.ssh
+          printf '%s\n' "$DROPLET_SSH_KEY" > ~/.ssh/droplet
+          chmod 600 ~/.ssh/droplet
+          ssh-keyscan -H "$DROPLET_HOST" >> ~/.ssh/known_hosts 2>/dev/null
+
+      - name: Switch the compose stack to the new image
+        env:
+          DROPLET_HOST: ${{ secrets.DROPLET_HOST }}
+          DO_TOKEN: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
+          IMAGE: ${{ inputs.image }}
+          TAG: ${{ inputs.image-tag }}
+        run: |
+          ssh -i ~/.ssh/droplet "root@${DROPLET_HOST}" IMAGE="$IMAGE" TAG="$TAG" DO_TOKEN="$DO_TOKEN" 'bash -s' <<'EOF'
+            set -euo pipefail
+            cd /opt/rocketchat-compose
+
+            # Keep the previous image around in .env so a rollback is a copy-paste.
+            PREV_IMAGE=$(grep -E '^IMAGE=' .env | cut -d= -f2- || true)
+            PREV_RELEASE=$(grep -E '^RELEASE=' .env | cut -d= -f2-)
+            echo "Previous: ${PREV_IMAGE:-registry.rocket.chat/rocketchat/rocket.chat}:${PREV_RELEASE}"
+
+            if [[ "$IMAGE" == registry.digitalocean.com/* ]]; then
+              echo "$DO_TOKEN" | docker login registry.digitalocean.com --username "$DO_TOKEN" --password-stdin
+            fi
+
+            cp .env ".env.bak.$(date +%Y%m%d%H%M%S)"
+            sed -i -E '/^IMAGE=/d; /^RELEASE=/d' .env
+            printf 'IMAGE=%s\nRELEASE=%s\n' "$IMAGE" "$TAG" >> .env
+
+            docker compose pull rocketchat
+            docker compose up -d rocketchat
+
+            for _ in $(seq 1 60); do
+              if curl -sf http://127.0.0.1:3000/api/info >/dev/null 2>&1 \
+                || docker compose exec -T rocketchat node -e "fetch('http://localhost:3000/api/info').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))" >/dev/null 2>&1; then
+                echo "Rocket.Chat answered on the new image"
+                docker compose exec -T rocketchat node -e "fetch('http://localhost:3000/api/info').then(r=>r.json()).then(j=>console.log('version', j.version))" || true
+                exit 0
+              fi
+              sleep 5
+            done
+            echo "Rocket.Chat did not come up within 5 minutes; rolling back"
+            sed -i -E '/^IMAGE=/d; /^RELEASE=/d' .env
+            if [ -n "${PREV_IMAGE}" ]; then printf 'IMAGE=%s\n' "$PREV_IMAGE" >> .env; fi
+            printf 'RELEASE=%s\n' "$PREV_RELEASE" >> .env
+            docker compose up -d rocketchat
+            exit 1
+          EOF
