@@ -1,0 +1,135 @@
+name: Social Parlay image
+
+# Builds the Social Parlay-branded Rocket.Chat image from this checkout and
+# pushes it to the DigitalOcean registry. Triggered by `sp-*` tags, which are
+# cut from the socialparlay/release branch, or by hand. The resulting image is
+# linux/amd64 to match the droplet; the image tag is the git tag name.
+#
+# Secrets: DIGITALOCEAN_ACCESS_TOKEN (registry read/write scope).
+
+on:
+  push:
+    tags:
+      - 'sp-*'
+  workflow_dispatch:
+    inputs:
+      image-tag:
+        description: 'Image tag to publish (defaults to the git ref name)'
+        required: false
+        type: string
+
+concurrency:
+  group: socialparlay-image-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  REGISTRY: registry.digitalocean.com
+  IMAGE_NAME: registry.digitalocean.com/socialparlay/rocket.chat
+
+jobs:
+  build:
+    name: Build and push
+    runs-on: ubuntu-24.04
+    timeout-minutes: 120
+    permissions:
+      contents: read
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Resolve image tag
+        id: tag
+        run: |
+          TAG="${{ inputs.image-tag }}"
+          if [ -z "$TAG" ]; then TAG="${GITHUB_REF_NAME}"; fi
+          echo "tag=${TAG}" >> "$GITHUB_OUTPUT"
+          echo "Publishing ${IMAGE_NAME}:${TAG}"
+
+      - name: Set swap space
+        uses: pierotofy/set-swap-space@v1.0
+        with:
+          swap-size-gb: 8
+
+      - name: Setup Node and install dependencies
+        uses: ./.github/actions/setup-node
+        with:
+          cache-modules: true
+          install: true
+
+      - name: Build workspace packages
+        run: yarn turbo run build --filter='@rocket.chat/meteor^...'
+
+      - name: Cache Meteor
+        uses: actions/cache@v4
+        with:
+          path: ~/.meteor
+          key: meteor-${{ runner.arch }}-${{ runner.os }}-${{ hashFiles('apps/meteor/.meteor/release') }}
+
+      - name: Install Meteor
+        run: |
+          if [ -x "$HOME/.meteor/meteor" ]; then
+            sudo ln -sf "$HOME/.meteor/meteor" /usr/local/bin/meteor
+          else
+            curl https://install.meteor.com | sed s/--progress-bar/-sL/g | /bin/sh
+          fi
+          meteor --version
+
+      - name: Build the Meteor bundle
+        working-directory: apps/meteor
+        env:
+          METEOR_PROFILE: 1000
+        run: |
+          yarn build:ci
+          # Trim what upstream's build also trims: foreign-arch binaries and type declarations.
+          cd /tmp/dist/bundle/programs/server/npm/node_modules
+          rm -rf meteor/babel-compiler/node_modules/@meteorjs/swc-core/.swc/node_modules/@swc/core-darwin-arm64 \
+                 meteor/babel-compiler/node_modules/@meteorjs/swc-core/.swc/node_modules/@swc/core-linux-arm64-musl \
+                 meteor/babel-compiler/node_modules/typescript \
+                 @rocket.chat/i18n/src \
+                 typescript
+          find /tmp/dist/bundle -type f -name '*.d.ts' -delete
+          find /tmp/dist/bundle/programs/server/npm/node_modules/@img -type d -name 'sharp-*' -not -name '*-linuxmusl-x64' -exec rm -rf {} + || true
+          find /tmp/dist/bundle/programs/server/npm/node_modules/@napi-rs -type d -name 'pinyin-linux-*' -not -name '*-linux-x64-*' -exec rm -rf {} + || true
+          find /tmp/dist/bundle/programs/server/npm/node_modules -type d -path '*/@esbuild/linux-*' -not -name 'linux-x64' -exec rm -rf {} + || true
+          du -sh /tmp/dist/bundle
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Log in to the DigitalOcean registry
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
+          password: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
+
+      - name: Build and push the image
+        uses: docker/build-push-action@v6
+        with:
+          context: /tmp/dist
+          file: apps/meteor/.docker/Dockerfile.alpine
+          target: release-standard
+          platforms: linux/amd64
+          push: true
+          provenance: false
+          sbom: false
+          tags: |
+            ${{ env.IMAGE_NAME }}:${{ steps.tag.outputs.tag }}
+          labels: |
+            org.opencontainers.image.source=${{ github.server_url }}/${{ github.repository }}
+            org.opencontainers.image.revision=${{ github.sha }}
+            org.opencontainers.image.description=Social Parlay build of Rocket.Chat from ${{ github.ref_name }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+      - name: Summary
+        run: |
+          {
+            echo "## Image published"
+            echo
+            echo '```'
+            echo "${IMAGE_NAME}:${{ steps.tag.outputs.tag }}"
+            echo '```'
+            echo
+            echo "Deploy it with the **Social Parlay deploy** workflow, passing that tag."
+          } >> "$GITHUB_STEP_SUMMARY"
