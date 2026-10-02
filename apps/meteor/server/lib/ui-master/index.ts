@@ -70,6 +70,8 @@ Meteor.startup(() => {
 		);
 	});
 
+	injectIntoHead('theme-color', '<meta name="msapplication-TileColor" content="#0a0f1e" /><meta name="theme-color" content="#0a0f1e" />');
+
 	settings.watch<string>('Site_Name', (value = 'Rocket.Chat') => {
 		const escapedValue = escapeHTML(value);
 		injectIntoHead(
