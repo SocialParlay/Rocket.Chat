@@ -37,8 +37,12 @@ Nothing in the image changes for this. It is two pieces of configuration, both s
 4. Team: the team or teams whose work should appear, or all public teams.
 5. Enable it.
 
-Linear signs every delivery in the `Linear-Signature` header. The script does not verify it; the webhook URL's
-token is what gates posting. Keep the URL out of shared documents.
+Linear signs every delivery with HMAC-SHA256 over the raw body, sent in the `Linear-Signature` header, and
+echoes the send time in the body. The script verifies both when `LINEAR_WEBHOOK_SECRET` at the top of the script
+is set: a missing, wrong or more-than-a-minute-old signature is rejected and nothing is posted. The repo copy keeps
+the secret blank, which disables the check; fill it in only in the integration on the server, from the webhook's
+page in Linear (Settings > API > Webhooks > the webhook > Signing secret). The sandbox has no crypto API, so the
+script carries its own SHA-256; it is a few hundred lines, which is why the whole file is pasted rather than typed.
 
 ## What gets posted
 
