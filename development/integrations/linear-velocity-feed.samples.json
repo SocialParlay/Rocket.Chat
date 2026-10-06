@@ -1,0 +1,476 @@
+{
+	"issue created": {
+		"action": "create",
+		"type": "Issue",
+		"createdAt": "2026-10-01T14:00:00.000Z",
+		"actor": {
+			"id": "u1",
+			"name": "Colin",
+			"type": "user"
+		},
+		"data": {
+			"id": "iss-1",
+			"identifier": "SP-142",
+			"title": "Deposit flow retries",
+			"url": "https://linear.app/socialparlay/issue/SP-142/deposit-flow-retries",
+			"estimate": 3,
+			"priority": 2,
+			"priorityLabel": "High",
+			"createdAt": "2026-10-01T14:00:00.000Z",
+			"team": {
+				"id": "t1",
+				"key": "SP",
+				"name": "Social Parlay"
+			},
+			"assignee": null,
+			"cycle": null,
+			"state": {
+				"id": "s-backlog",
+				"name": "Backlog",
+				"type": "backlog",
+				"color": "#000"
+			}
+		},
+		"url": "https://linear.app/socialparlay/issue/SP-142/deposit-flow-retries"
+	},
+	"issue started": {
+		"action": "update",
+		"type": "Issue",
+		"actor": {
+			"id": "u1",
+			"name": "Colin",
+			"type": "user"
+		},
+		"data": {
+			"id": "iss-1",
+			"identifier": "SP-142",
+			"title": "Deposit flow retries",
+			"url": "https://linear.app/socialparlay/issue/SP-142/deposit-flow-retries",
+			"estimate": 3,
+			"priority": 2,
+			"priorityLabel": "High",
+			"createdAt": "2026-10-01T14:00:00.000Z",
+			"team": {
+				"id": "t1",
+				"key": "SP",
+				"name": "Social Parlay"
+			},
+			"assignee": {
+				"id": "u1",
+				"name": "Colin"
+			},
+			"cycle": {
+				"id": "c7",
+				"number": 7,
+				"name": null
+			},
+			"state": {
+				"id": "s-started",
+				"name": "In Progress",
+				"type": "started",
+				"color": "#000"
+			},
+			"startedAt": "2026-10-02T09:00:00.000Z"
+		},
+		"updatedFrom": {
+			"stateId": "s-unstarted",
+			"updatedAt": "2026-10-02T08:59:00.000Z",
+			"startedAt": null
+		},
+		"url": "https://linear.app/socialparlay/issue/SP-142/deposit-flow-retries"
+	},
+	"issue done": {
+		"action": "update",
+		"type": "Issue",
+		"actor": {
+			"id": "u1",
+			"name": "Colin",
+			"type": "user"
+		},
+		"data": {
+			"id": "iss-1",
+			"identifier": "SP-142",
+			"title": "Deposit flow retries",
+			"url": "https://linear.app/socialparlay/issue/SP-142/deposit-flow-retries",
+			"estimate": 3,
+			"priority": 2,
+			"priorityLabel": "High",
+			"createdAt": "2026-10-01T14:00:00.000Z",
+			"team": {
+				"id": "t1",
+				"key": "SP",
+				"name": "Social Parlay"
+			},
+			"assignee": {
+				"id": "u1",
+				"name": "Colin"
+			},
+			"cycle": {
+				"id": "c7",
+				"number": 7,
+				"name": null
+			},
+			"state": {
+				"id": "s-completed",
+				"name": "Done",
+				"type": "completed",
+				"color": "#000"
+			},
+			"startedAt": "2026-10-02T09:00:00.000Z",
+			"completedAt": "2026-10-04T15:30:00.000Z"
+		},
+		"updatedFrom": {
+			"stateId": "s-started",
+			"completedAt": null
+		},
+		"url": "https://linear.app/socialparlay/issue/SP-142/deposit-flow-retries"
+	},
+	"issue done same day": {
+		"action": "update",
+		"type": "Issue",
+		"data": {
+			"id": "iss-1",
+			"identifier": "SP-150",
+			"title": "Deposit flow retries",
+			"url": "https://linear.app/socialparlay/issue/SP-142/deposit-flow-retries",
+			"estimate": 3,
+			"priority": 2,
+			"priorityLabel": "High",
+			"createdAt": "2026-10-01T14:00:00.000Z",
+			"team": {
+				"id": "t1",
+				"key": "SP",
+				"name": "Social Parlay"
+			},
+			"assignee": {
+				"id": "u1",
+				"name": "Colin"
+			},
+			"cycle": {
+				"id": "c7",
+				"number": 7,
+				"name": null
+			},
+			"state": {
+				"id": "s-completed",
+				"name": "Done",
+				"type": "completed",
+				"color": "#000"
+			},
+			"startedAt": "2026-10-04T09:00:00.000Z",
+			"completedAt": "2026-10-04T12:10:00.000Z"
+		},
+		"updatedFrom": {
+			"stateId": "s-started",
+			"completedAt": null
+		},
+		"url": "https://linear.app/socialparlay/issue/SP-142/deposit-flow-retries"
+	},
+	"issue cancelled": {
+		"action": "update",
+		"type": "Issue",
+		"actor": {
+			"id": "u1",
+			"name": "Colin",
+			"type": "user"
+		},
+		"data": {
+			"id": "iss-1",
+			"identifier": "SP-142",
+			"title": "Deposit flow retries",
+			"url": "https://linear.app/socialparlay/issue/SP-142/deposit-flow-retries",
+			"estimate": 3,
+			"priority": 2,
+			"priorityLabel": "High",
+			"createdAt": "2026-10-01T14:00:00.000Z",
+			"team": {
+				"id": "t1",
+				"key": "SP",
+				"name": "Social Parlay"
+			},
+			"assignee": {
+				"id": "u1",
+				"name": "Colin"
+			},
+			"cycle": {
+				"id": "c7",
+				"number": 7,
+				"name": null
+			},
+			"state": {
+				"id": "s-canceled",
+				"name": "Canceled",
+				"type": "canceled",
+				"color": "#000"
+			},
+			"canceledAt": "2026-10-03T10:00:00.000Z"
+		},
+		"updatedFrom": {
+			"stateId": "s-started"
+		},
+		"url": "https://linear.app/socialparlay/issue/SP-142/deposit-flow-retries"
+	},
+	"issue back to todo": {
+		"action": "update",
+		"type": "Issue",
+		"actor": {
+			"id": "u1",
+			"name": "Colin",
+			"type": "user"
+		},
+		"data": {
+			"id": "iss-1",
+			"identifier": "SP-142",
+			"title": "Deposit flow retries",
+			"url": "https://linear.app/socialparlay/issue/SP-142/deposit-flow-retries",
+			"estimate": 3,
+			"priority": 2,
+			"priorityLabel": "High",
+			"createdAt": "2026-10-01T14:00:00.000Z",
+			"team": {
+				"id": "t1",
+				"key": "SP",
+				"name": "Social Parlay"
+			},
+			"assignee": {
+				"id": "u1",
+				"name": "Colin"
+			},
+			"cycle": {
+				"id": "c7",
+				"number": 7,
+				"name": null
+			},
+			"state": {
+				"id": "s-unstarted",
+				"name": "Todo",
+				"type": "unstarted",
+				"color": "#000"
+			}
+		},
+		"updatedFrom": {
+			"stateId": "s-started"
+		},
+		"url": "https://linear.app/socialparlay/issue/SP-142/deposit-flow-retries"
+	},
+	"issue added to cycle": {
+		"action": "update",
+		"type": "Issue",
+		"actor": {
+			"id": "u1",
+			"name": "Colin",
+			"type": "user"
+		},
+		"data": {
+			"id": "iss-1",
+			"identifier": "SP-142",
+			"title": "Deposit flow retries",
+			"url": "https://linear.app/socialparlay/issue/SP-142/deposit-flow-retries",
+			"estimate": 3,
+			"priority": 2,
+			"priorityLabel": "High",
+			"createdAt": "2026-10-01T14:00:00.000Z",
+			"team": {
+				"id": "t1",
+				"key": "SP",
+				"name": "Social Parlay"
+			},
+			"assignee": {
+				"id": "u1",
+				"name": "Colin"
+			},
+			"cycle": {
+				"id": "c7",
+				"number": 7,
+				"name": null
+			},
+			"state": {
+				"id": "s-unstarted",
+				"name": "Todo",
+				"type": "unstarted",
+				"color": "#000"
+			}
+		},
+		"updatedFrom": {
+			"cycleId": null
+		},
+		"url": "https://linear.app/socialparlay/issue/SP-142/deposit-flow-retries"
+	},
+	"issue removed from cycle": {
+		"action": "update",
+		"type": "Issue",
+		"actor": {
+			"id": "u1",
+			"name": "Colin",
+			"type": "user"
+		},
+		"data": {
+			"id": "iss-1",
+			"identifier": "SP-142",
+			"title": "Deposit flow retries",
+			"url": "https://linear.app/socialparlay/issue/SP-142/deposit-flow-retries",
+			"estimate": 3,
+			"priority": 2,
+			"priorityLabel": "High",
+			"createdAt": "2026-10-01T14:00:00.000Z",
+			"team": {
+				"id": "t1",
+				"key": "SP",
+				"name": "Social Parlay"
+			},
+			"assignee": {
+				"id": "u1",
+				"name": "Colin"
+			},
+			"cycle": null,
+			"state": {
+				"id": "s-unstarted",
+				"name": "Todo",
+				"type": "unstarted",
+				"color": "#000"
+			}
+		},
+		"updatedFrom": {
+			"cycleId": "c7"
+		},
+		"url": "https://linear.app/socialparlay/issue/SP-142/deposit-flow-retries"
+	},
+	"issue title edit (ignored)": {
+		"action": "update",
+		"type": "Issue",
+		"actor": {
+			"id": "u1",
+			"name": "Colin",
+			"type": "user"
+		},
+		"data": {
+			"id": "iss-1",
+			"identifier": "SP-142",
+			"title": "Deposit flow retries",
+			"url": "https://linear.app/socialparlay/issue/SP-142/deposit-flow-retries",
+			"estimate": 3,
+			"priority": 2,
+			"priorityLabel": "High",
+			"createdAt": "2026-10-01T14:00:00.000Z",
+			"team": {
+				"id": "t1",
+				"key": "SP",
+				"name": "Social Parlay"
+			},
+			"assignee": {
+				"id": "u1",
+				"name": "Colin"
+			},
+			"cycle": {
+				"id": "c7",
+				"number": 7,
+				"name": null
+			},
+			"state": {
+				"id": "s-unstarted",
+				"name": "Todo",
+				"type": "unstarted",
+				"color": "#000"
+			}
+		},
+		"updatedFrom": {
+			"title": "Old title"
+		},
+		"url": "https://linear.app/socialparlay/issue/SP-142/deposit-flow-retries"
+	},
+	"issue assignee change (ignored)": {
+		"action": "update",
+		"type": "Issue",
+		"actor": {
+			"id": "u1",
+			"name": "Colin",
+			"type": "user"
+		},
+		"data": {
+			"id": "iss-1",
+			"identifier": "SP-142",
+			"title": "Deposit flow retries",
+			"url": "https://linear.app/socialparlay/issue/SP-142/deposit-flow-retries",
+			"estimate": 3,
+			"priority": 2,
+			"priorityLabel": "High",
+			"createdAt": "2026-10-01T14:00:00.000Z",
+			"team": {
+				"id": "t1",
+				"key": "SP",
+				"name": "Social Parlay"
+			},
+			"assignee": {
+				"id": "u1",
+				"name": "Colin"
+			},
+			"cycle": {
+				"id": "c7",
+				"number": 7,
+				"name": null
+			},
+			"state": {
+				"id": "s-unstarted",
+				"name": "Todo",
+				"type": "unstarted",
+				"color": "#000"
+			}
+		},
+		"updatedFrom": {
+			"assigneeId": "u9"
+		},
+		"url": "https://linear.app/socialparlay/issue/SP-142/deposit-flow-retries"
+	},
+	"comment (ignored)": {
+		"action": "create",
+		"type": "Comment",
+		"data": {
+			"id": "cm1",
+			"body": "looks good",
+			"issue": {
+				"id": "iss-1"
+			}
+		}
+	},
+	"cycle created": {
+		"action": "create",
+		"type": "Cycle",
+		"data": {
+			"id": "c8",
+			"number": 8,
+			"name": null,
+			"startsAt": "2026-10-06T00:00:00.000Z",
+			"endsAt": "2026-10-20T00:00:00.000Z",
+			"issueCountHistory": [12],
+			"completedIssueCountHistory": [0]
+		}
+	},
+	"cycle completed": {
+		"action": "update",
+		"type": "Cycle",
+		"data": {
+			"id": "c7",
+			"number": 7,
+			"name": "Launch prep",
+			"completedAt": "2026-10-06T00:00:00.000Z",
+			"issueCountHistory": [10, 12, 12],
+			"completedIssueCountHistory": [0, 4, 9]
+		},
+		"updatedFrom": {
+			"completedAt": null
+		}
+	},
+	"cycle progress tick (ignored)": {
+		"action": "update",
+		"type": "Cycle",
+		"data": {
+			"id": "c8",
+			"number": 8,
+			"issueCountHistory": [12, 13],
+			"completedIssueCountHistory": [0, 1]
+		},
+		"updatedFrom": {
+			"issueCountHistory": [12]
+		}
+	}
+}
